@@ -1,8 +1,10 @@
 name: CI
 
+# En una rama con pull request abierto, `pull_request` ya cubre cada push:
+# limitar `push` a main evita ejecutar dos veces el mismo commit.
 on:
   push:
-    branches: ['**']
+    branches: [main]
   pull_request:
 
 # Un push nuevo cancela la ejecución anterior de la misma rama.
