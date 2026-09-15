@@ -110,12 +110,12 @@ export function GraficoLineas({
               x2={ancho - MARGEN.derecha}
               y1={y(objetivo)}
               y2={y(objetivo)}
-              stroke="var(--ok)"
+              stroke="var(--objetivo)"
               strokeDasharray="5 4"
               strokeWidth={1.5}
             />
             {etiquetaObjetivo && (
-              <text className="eje-texto" x={ancho - MARGEN.derecha} y={y(objetivo) - 5} textAnchor="end" fill="var(--ok)">
+              <text className="eje-texto" x={ancho - MARGEN.derecha} y={y(objetivo) - 5} textAnchor="end" fill="var(--objetivo)">
                 {etiquetaObjetivo}
               </text>
             )}
@@ -156,7 +156,7 @@ export function GraficoLineas({
         ))}
         {objetivo != null && (
           <span>
-            <i style={{ background: 'var(--ok)' }} /> Objetivo
+            <i style={{ background: 'var(--objetivo)' }} /> Objetivo
           </span>
         )}
       </div>

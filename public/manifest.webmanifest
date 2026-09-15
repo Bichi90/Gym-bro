@@ -4,8 +4,9 @@
   "description": "Seguimiento de rutinas, cargas, antropometría y progreso.",
   "start_url": "./",
   "display": "standalone",
-  "background_color": "#0d1117",
-  "theme_color": "#0d1117",
+  "orientation": "portrait",
+  "background_color": "#090B10",
+  "theme_color": "#090B10",
   "icons": [
     {
       "src": "./icon.svg",

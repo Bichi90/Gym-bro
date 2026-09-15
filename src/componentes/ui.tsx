@@ -38,7 +38,7 @@ export function Metrica({
 }) {
   return (
     <div className="metrica">
-      <div className="etiqueta">{etiqueta}</div>
+      <div className="clave">{etiqueta}</div>
       <div className="valor">{valor}</div>
       {pie && <div className="pie">{pie}</div>}
     </div>
