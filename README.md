@@ -66,10 +66,14 @@ npm run preview    # sirve el build
 
 `dist/` es estático: se puede publicar en cualquier hosting de archivos.
 
-La versión publicada vive en **https://bichi90.github.io/Gym-bro/**. Cada push a `main` la
-reconstruye y la republica (`.github/workflows/deploy.yml`), después de pasar tipos, tests y build.
-El `base` de Vite es relativo y el enrutado es por hash, así que el sitio funciona igual servido
-desde la raíz de un dominio o desde un subdirectorio.
+Hay un workflow de publicación en GitHub Pages (`.github/workflows/deploy.yml`) que construye y
+sube `dist/` después de pasar tipos, tests y build. Está a la espera de dos requisitos: activar
+Pages en los ajustes del repositorio (el token de Actions no puede crear el sitio) y, por ser un
+repositorio privado, un plan de pago o hacerlo público. Mientras tanto se lanza a mano desde la
+pestaña Actions.
+
+El `base` de Vite es relativo y el enrutado es por hash, así que el build funciona igual servido
+desde la raíz de un dominio o desde un subdirectorio, sin recompilar.
 
 El primer arranque va vacío. El orden recomendado es **Ajustes** (altura, fecha de nacimiento,
 experiencia, equipamiento) → **Antropometría** (primera medición) → **Objetivo** → *Generar rutina*
