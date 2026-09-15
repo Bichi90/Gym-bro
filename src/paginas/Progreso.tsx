@@ -1,3 +1,5 @@
+'use client'
+
 import { useMemo, useState } from 'react'
 import { GraficoBarras, GraficoLineas, type BarraDato, type Serie } from '../componentes/graficos'
 import { Etiqueta, Metrica, Tarjeta, Vacio } from '../componentes/ui'

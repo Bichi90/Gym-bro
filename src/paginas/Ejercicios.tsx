@@ -1,3 +1,5 @@
+'use client'
+
 import { useMemo, useState } from 'react'
 import { Campo, CampoNumero, Etiqueta, Modal, Tarjeta, Vacio } from '../componentes/ui'
 import { useAlmacen } from '../estado/almacen'

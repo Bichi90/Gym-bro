@@ -1,3 +1,5 @@
+'use client'
+
 import { useMemo } from 'react'
 import { resumirMedicion, tendenciaPesoSemanal, ultimaMedicion, type ResumenAntropometrico } from '../lib/antropometria'
 import { adherencia, recordsPorEjercicio, resumenSemanal } from '../lib/entrenamiento'

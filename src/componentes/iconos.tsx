@@ -1,3 +1,5 @@
+'use client'
+
 /** Iconos de trazo, 24×24, pensados para verse bien a 15 y a 20 px. */
 
 type Props = { className?: string }

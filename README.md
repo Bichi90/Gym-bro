@@ -3,9 +3,10 @@
 Herramienta de seguimiento de gimnasio: rutinas, cargas, repeticiones, antropometría y progreso
 hacia un objetivo concreto.
 
-Es una aplicación web que corre entera en el navegador. **No hay servidor ni cuenta**: todos los
-datos se guardan en el `localStorage` del dispositivo y se pueden exportar e importar como JSON.
-Funciona en el móvil y se puede instalar como app desde el navegador (es una PWA básica).
+Aplicación **Next.js** (App Router) desplegada en Vercel. Hoy funciona **local-first**: todos los
+datos viven en el `localStorage` del dispositivo y se exportan e importan como JSON, sin cuenta ni
+servidor. Se está construyendo el acceso con cuentas y la relación entrenador–entrenado; el
+comportamiento local-first se mantiene, porque en el gimnasio muchas veces no hay señal.
 
 ## Qué hace
 
@@ -59,20 +60,14 @@ recomendado, adherencia al plan, récords personales e historial completo de ses
 ```bash
 npm install
 npm run dev        # servidor de desarrollo
-npm test           # tests de la lógica de cálculo
-npm run build      # build de producción en dist/
-npm run preview    # sirve el build
+npm test           # tests de lógica pura (dominio y autenticación)
+npm run typecheck  # tipos del cliente y del servidor
+npm run build      # build de producción
+npm start          # sirve el build
 ```
 
-`dist/` es estático: se puede publicar en cualquier hosting de archivos.
-
-La versión publicada vive en **https://bichi90.github.io/Gym-bro/**. Cada push a `main` la
-reconstruye y la republica (`.github/workflows/deploy.yml`), pero solo después de pasar tipos,
-tests y build, así que un fallo nunca llega al sitio en vivo. También se puede relanzar a mano
-desde la pestaña Actions.
-
-El `base` de Vite es relativo y el enrutado es por hash, así que el build funciona igual servido
-desde la raíz de un dominio o desde un subdirectorio, sin recompilar.
+La versión publicada vive en **https://gym-bro-soporteck-srl.vercel.app**. Cada push a `main`
+despliega, y cada PR genera una preview. CI comprueba tipos, tests y build antes de mergear.
 
 El primer arranque va vacío. El orden recomendado es **Ajustes** (altura, fecha de nacimiento,
 experiencia, equipamiento) → **Antropometría** (primera medición) → **Objetivo** → *Generar rutina*
@@ -82,6 +77,7 @@ experiencia, equipamiento) → **Antropometría** (primera medición) → **Obje
 
 ```
 src/
+  app/                 rutas del App Router y hoja de estilos
   lib/                 lógica pura, sin React, con tests
     types.ts           modelo de dominio
     ejercicios.ts      catálogo de ejercicios
@@ -91,9 +87,14 @@ src/
     entrenamiento.ts   1RM, volumen, progresión, récords, adherencia
     almacenamiento.ts  persistencia en localStorage, export/import
     formato.ts         formateo de números, pesos y fechas
+    rutas.ts           mapa de secciones y navegación
   estado/              store de React y derivados compartidos
-  componentes/         primitivas de interfaz y gráficos SVG
-  paginas/             una por sección de la app
+  componentes/         primitivas de interfaz, gráficos SVG e iconos
+  paginas/             una por sección, montada por su ruta en app/
+servidor/
+  auth/                contraseñas, códigos, sesiones y políticas, con tests
+db/
+  001_inicial.sql      esquema de Postgres
 ```
 
 La lógica de cálculo está separada de la interfaz y cubierta por tests (`npm test`), así que se

@@ -1,5 +1,7 @@
+'use client'
+
 import { useState } from 'react'
-import { navegar } from '../App'
+import { navegar } from '../lib/rutas'
 import { Aviso, Barra, Campo, CampoNumero, Chips, Metrica, Tarjeta, Vacio } from '../componentes/ui'
 import { useAlmacen } from '../estado/almacen'
 import { useDerivados } from '../estado/derivados'

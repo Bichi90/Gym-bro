@@ -1,5 +1,6 @@
 node_modules/
-dist/
+.next/
+out/
 *.local
 .DS_Store
 .vite/
@@ -7,3 +8,5 @@ dist/
 .env
 .env.local
 .env*.local
+
+# next-env.d.ts lo genera Next en cada build, pero se versiona a propósito.
