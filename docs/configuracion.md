@@ -7,13 +7,10 @@ Todos requieren entrar a las consolas de cada servicio con tu cuenta.
 
 ## 1. Dominio en Vercel
 
-**Vercel → gym-bro → Settings → Domains → Add**, y pedí `gymbro.vercel.app`.
-
-Si estuviera ocupado, probá `gym-bro-app.vercel.app` o `gymbro-ar.vercel.app`. Anotá cuál quedó:
-ese valor es el que va en `URL_PUBLICA`, y es el que aparece en los enlaces de los correos.
+Hecho: el dominio es **https://gymbro.vercel.app**, y es el valor que va en `URL_PUBLICA`.
 
 El alias que Vercel asigna por defecto (`gym-bro-soporteck-srl.vercel.app`) sigue funcionando; el
-nuevo se suma, no lo reemplaza.
+nuevo se sumó, no lo reemplazó.
 
 ---
 
