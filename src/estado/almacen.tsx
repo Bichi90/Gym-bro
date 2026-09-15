@@ -1,4 +1,6 @@
-import { createContext, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
+'use client'
+
+import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from 'react'
 import { cargarEstado, guardarEstado, estadoInicial, nuevoId } from '../lib/almacenamiento'
 import { EJERCICIOS_BASE } from '../lib/ejercicios'
 import { hoyISO } from '../lib/formato'
@@ -46,6 +48,8 @@ interface Acciones {
 
 interface Almacen {
   estado: Estado
+  /** false hasta que se ha leído el almacenamiento del dispositivo. */
+  hidratado: boolean
   acciones: Acciones
   /** Catálogo base más los ejercicios creados por el usuario. */
   ejercicios: Ejercicio[]
@@ -56,16 +60,22 @@ interface Almacen {
 const ContextoAlmacen = createContext<Almacen | null>(null)
 
 export function ProveedorAlmacen({ children }: { children: ReactNode }) {
-  const [estado, setEstado] = useState<Estado>(() => cargarEstado())
-  const primeraCarga = useRef(true)
+  // El primer render tiene que coincidir con el del servidor, así que arranca
+  // con el estado inicial y el contenido real se lee ya en el navegador. Si se
+  // leyera localStorage durante el render, la hidratación no cuadraría.
+  const [estado, setEstado] = useState<Estado>(estadoInicial)
+  const [hidratado, setHidratado] = useState(false)
 
   useEffect(() => {
-    if (primeraCarga.current) {
-      primeraCarga.current = false
-      return
-    }
+    setEstado(cargarEstado())
+    setHidratado(true)
+  }, [])
+
+  useEffect(() => {
+    // Nada de escribir antes de haber leído: se borrarían los datos guardados.
+    if (!hidratado) return
     guardarEstado(estado)
-  }, [estado])
+  }, [estado, hidratado])
 
   const valor = useMemo<Almacen>(() => {
     const ejercicios = [...EJERCICIOS_BASE, ...estado.ejerciciosPropios]
@@ -236,12 +246,13 @@ export function ProveedorAlmacen({ children }: { children: ReactNode }) {
 
     return {
       estado,
+      hidratado,
       acciones,
       ejercicios,
       buscarEjercicio: (id: string) => indice.get(id),
       rutinaActiva: estado.rutinas.find((r) => r.activa) ?? estado.rutinas.at(-1),
     }
-  }, [estado])
+  }, [estado, hidratado])
 
   return <ContextoAlmacen.Provider value={valor}>{children}</ContextoAlmacen.Provider>
 }

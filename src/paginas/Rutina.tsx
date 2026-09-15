@@ -1,5 +1,7 @@
+'use client'
+
 import { useMemo, useState } from 'react'
-import { navegar } from '../App'
+import { navegar } from '../lib/rutas'
 import { GraficoBarras, type BarraDato } from '../componentes/graficos'
 import { Aviso, Campo, CampoNumero, Etiqueta, Modal, Tarjeta, Vacio } from '../componentes/ui'
 import { useAlmacen } from '../estado/almacen'

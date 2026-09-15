@@ -1,5 +1,7 @@
+'use client'
+
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { navegar } from '../App'
+import { navegar } from '../lib/rutas'
 import { SelectorEjercicio } from './Rutina'
 import { Aviso, Campo, CampoNumero, Etiqueta, Modal, Tarjeta, Vacio } from '../componentes/ui'
 import { useAlmacen } from '../estado/almacen'

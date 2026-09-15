@@ -38,3 +38,6 @@ jobs:
 
       - name: Build de producción
         run: npm run build
+        env:
+          # El build no debe depender de secretos: si alguno faltara, que falle aquí.
+          NEXT_TELEMETRY_DISABLED: '1'

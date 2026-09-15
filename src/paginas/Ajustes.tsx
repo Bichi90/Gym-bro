@@ -1,3 +1,5 @@
+'use client'
+
 import { useRef, useState } from 'react'
 import { Aviso, Campo, CampoNumero, Chips, Tarjeta } from '../componentes/ui'
 import { useAlmacen } from '../estado/almacen'

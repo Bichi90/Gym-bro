@@ -46,7 +46,13 @@ export function migrar(bruto: unknown): Estado {
   }
 }
 
+/** Devuelve el estado inicial en el servidor: allí no hay localStorage. */
+export function hayAlmacenamiento(): boolean {
+  return typeof window !== 'undefined' && typeof window.localStorage !== 'undefined'
+}
+
 export function cargarEstado(): Estado {
+  if (!hayAlmacenamiento()) return estadoInicial()
   try {
     const bruto = localStorage.getItem(CLAVE_ALMACEN)
     if (!bruto) return estadoInicial()
@@ -57,6 +63,7 @@ export function cargarEstado(): Estado {
 }
 
 export function guardarEstado(estado: Estado): void {
+  if (!hayAlmacenamiento()) return
   try {
     localStorage.setItem(CLAVE_ALMACEN, JSON.stringify(estado))
   } catch {

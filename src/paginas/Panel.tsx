@@ -1,5 +1,7 @@
+'use client'
+
 import { useMemo } from 'react'
-import { navegar } from '../App'
+import { navegar } from '../lib/rutas'
 import { GraficoLineas, type Serie } from '../componentes/graficos'
 import { Aviso, Barra, Etiqueta, Metrica, Tarjeta, Vacio } from '../componentes/ui'
 import { useAlmacen } from '../estado/almacen'
@@ -18,7 +20,7 @@ export function PaginaPanel() {
     if (!estado.perfil.alturaCm || !estado.perfil.fechaNacimiento)
       lista.push({ texto: 'Completá altura y fecha de nacimiento en Ajustes', ruta: 'ajustes' })
     if (estado.mediciones.length === 0)
-      lista.push({ texto: 'Cargá tu primera medición antropométrica', ruta: 'antropometria' })
+      lista.push({ texto: 'Cargá tu primera medición antropométrica', ruta: 'medidas' })
     if (!estado.objetivo.pesoObjetivoKg && estado.objetivo.grasaObjetivoPct == null)
       lista.push({ texto: 'Definí un peso o % de grasa objetivo', ruta: 'objetivo' })
     if (!rutinaActiva) lista.push({ texto: 'Generá tu rutina a partir del objetivo', ruta: 'rutina' })
@@ -150,7 +152,7 @@ export function PaginaPanel() {
           )}
         </Tarjeta>
 
-        <Tarjeta titulo="Peso corporal" accion={<button type="button" className="boton pequeno" onClick={() => navegar('antropometria')}>Registrar</button>}>
+        <Tarjeta titulo="Peso corporal" accion={<button type="button" className="boton pequeno" onClick={() => navegar('medidas')}>Registrar</button>}>
           {seriePeso.length ? (
             <GraficoLineas
               series={seriePeso}
