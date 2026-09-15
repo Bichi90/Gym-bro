@@ -66,6 +66,11 @@ npm run preview    # sirve el build
 
 `dist/` es estático: se puede publicar en cualquier hosting de archivos.
 
+La versión publicada vive en **https://bichi90.github.io/Gym-bro/**. Cada push a `main` la
+reconstruye y la republica (`.github/workflows/deploy.yml`), después de pasar tipos, tests y build.
+El `base` de Vite es relativo y el enrutado es por hash, así que el sitio funciona igual servido
+desde la raíz de un dominio o desde un subdirectorio.
+
 El primer arranque va vacío. El orden recomendado es **Ajustes** (altura, fecha de nacimiento,
 experiencia, equipamiento) → **Antropometría** (primera medición) → **Objetivo** → *Generar rutina*
 → **Entrenar**.
