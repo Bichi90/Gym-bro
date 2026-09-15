@@ -1,5 +1,16 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, type ComponentType } from 'react'
 import { useAlmacen } from './estado/almacen'
+import {
+  GlifoMarca,
+  IconoAjustes,
+  IconoAntropometria,
+  IconoEjercicios,
+  IconoEntrenar,
+  IconoObjetivo,
+  IconoPanel,
+  IconoProgreso,
+  IconoRutina,
+} from './componentes/iconos'
 import { PaginaPanel } from './paginas/Panel'
 import { PaginaAntropometria } from './paginas/Antropometria'
 import { PaginaObjetivo } from './paginas/Objetivo'
@@ -10,15 +21,15 @@ import { PaginaEjercicios } from './paginas/Ejercicios'
 import { PaginaAjustes } from './paginas/Ajustes'
 
 const RUTAS = [
-  { id: 'panel', etiqueta: 'Panel' },
-  { id: 'entrenar', etiqueta: 'Entrenar' },
-  { id: 'rutina', etiqueta: 'Rutina' },
-  { id: 'progreso', etiqueta: 'Progreso' },
-  { id: 'antropometria', etiqueta: 'Antropometría' },
-  { id: 'objetivo', etiqueta: 'Objetivo' },
-  { id: 'ejercicios', etiqueta: 'Ejercicios' },
-  { id: 'ajustes', etiqueta: 'Ajustes' },
-] as const
+  { id: 'panel', etiqueta: 'Panel', Icono: IconoPanel },
+  { id: 'entrenar', etiqueta: 'Entrenar', Icono: IconoEntrenar },
+  { id: 'rutina', etiqueta: 'Rutina', Icono: IconoRutina },
+  { id: 'progreso', etiqueta: 'Progreso', Icono: IconoProgreso },
+  { id: 'antropometria', etiqueta: 'Medidas', Icono: IconoAntropometria },
+  { id: 'objetivo', etiqueta: 'Objetivo', Icono: IconoObjetivo },
+  { id: 'ejercicios', etiqueta: 'Ejercicios', Icono: IconoEjercicios },
+  { id: 'ajustes', etiqueta: 'Ajustes', Icono: IconoAjustes },
+] as const satisfies readonly { id: string; etiqueta: string; Icono: ComponentType<{ className?: string }> }[]
 
 export type RutaId = (typeof RUTAS)[number]['id']
 
@@ -49,23 +60,23 @@ export function App() {
     <div className="app">
       <header className="barra-superior">
         <div className="marca">
-          <span className="punto" aria-hidden />
+          <span className="glifo" aria-hidden>
+            <GlifoMarca />
+          </span>
           Gym Bro
-          {estado.sesionActiva && (
-            <span className="etiqueta acento" style={{ marginLeft: 8 }}>
-              Sesión en curso
-            </span>
-          )}
+          {estado.sesionActiva && <span className="etiqueta acento">En sesión</span>}
         </div>
+
         <nav className="nav" aria-label="Secciones">
-          {RUTAS.map((r) => (
+          {RUTAS.map(({ id, etiqueta, Icono }) => (
             <button
-              key={r.id}
+              key={id}
               type="button"
-              aria-current={ruta === r.id ? 'page' : undefined}
-              onClick={() => navegar(r.id)}
+              aria-current={ruta === id ? 'page' : undefined}
+              onClick={() => navegar(id)}
             >
-              {r.etiqueta}
+              <Icono />
+              {etiqueta}
             </button>
           ))}
         </nav>
@@ -81,6 +92,20 @@ export function App() {
         {ruta === 'ejercicios' && <PaginaEjercicios />}
         {ruta === 'ajustes' && <PaginaAjustes />}
       </main>
+
+      <nav className="nav-inferior" aria-label="Secciones">
+        {RUTAS.map(({ id, etiqueta, Icono }) => (
+          <button
+            key={id}
+            type="button"
+            aria-current={ruta === id ? 'page' : undefined}
+            onClick={() => navegar(id)}
+          >
+            <Icono />
+            {etiqueta}
+          </button>
+        ))}
+      </nav>
     </div>
   )
 }

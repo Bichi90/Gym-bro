@@ -78,7 +78,7 @@ export function PaginaAntropometria() {
   }, [ordenadas, perfil, estado.objetivo.diasPorSemana])
 
   const seriesCircunferencias = useMemo<Serie[]>(() => {
-    const colores = ['var(--acento)', 'var(--info)', 'var(--ok)', 'var(--alerta)', '#c084fc']
+    const colores = ['var(--acento)', 'var(--info)', 'var(--ok)', 'var(--alerta)', 'var(--objetivo)']
     const claves: ClaveCircunferencia[] = ['cinturaCm', 'pechoCm', 'brazoCm', 'musloCm', 'caderaCm']
     const series: Serie[] = []
     claves.forEach((clave, i) => {
