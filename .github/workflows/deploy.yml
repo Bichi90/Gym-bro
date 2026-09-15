@@ -1,9 +1,18 @@
 name: Deploy a GitHub Pages
 
+# Pendiente de dos requisitos que no se pueden resolver desde el workflow:
+#
+#   1. GitHub Pages tiene que estar activado en Ajustes → Pages, con origen
+#      "GitHub Actions". El GITHUB_TOKEN de Actions no tiene permiso para crear
+#      el sitio, así que `configure-pages` con `enablement: true` falla con
+#      "Resource not accessible by integration".
+#   2. Este repositorio es privado y Pages sobre repositorios privados requiere
+#      un plan de pago (Pro, Team o Enterprise); si no, hay que hacerlo público.
+#
+# Hasta entonces se lanza solo a mano, para no dejar main en rojo en cada push.
+# Una vez cumplidos los dos requisitos, basta con devolver el disparador
+# `push: branches: [main]` para que publique en cada cambio.
 on:
-  push:
-    branches: [main]
-  # Permite relanzar la publicación a mano desde la pestaña Actions.
   workflow_dispatch:
 
 permissions:
@@ -43,10 +52,7 @@ jobs:
         run: npm run build
 
       - name: Configurar Pages
-        # enablement activa GitHub Pages en el repositorio si todavía no lo está.
         uses: actions/configure-pages@v5
-        with:
-          enablement: true
 
       - name: Subir el sitio
         uses: actions/upload-pages-artifact@v3
