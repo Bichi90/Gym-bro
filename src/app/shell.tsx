@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { useAlmacen } from '../estado/almacen'
 import { RUTAS, esRutaPublica, registrarNavegador, type RutaId } from '../lib/rutas'
+import { BotonTema } from '../componentes/tema'
 import {
   GlifoMarca,
   IconoAjustes,
@@ -68,6 +69,8 @@ export function Shell({ children }: { children: ReactNode }) {
             )
           })}
         </nav>
+
+        <BotonTema />
       </header>
 
       <main className="contenido">{children}</main>

@@ -1,36 +1,49 @@
 /* ==========================================================================
    Gym Bro — sistema visual
-   Fondo casi negro con matiz frío, acento lima eléctrico y tipografía
-   Space Grotesk para los números (que es lo que se lee de reojo entre series).
+
+   Dos temas: noche (grafito cálido con naranja) y día (arena con terracota).
+   Todo lo que tiene color sale de los tokens de abajo, así que el tema entero
+   se cambia redefiniéndolos — no hay un solo color escrito a mano en las
+   reglas.
+
+   El tema base es noche. El de día se activa con `data-tema="dia"` en el
+   <html>, que pone un guión mínimo en el <head> antes del primer pintado.
+   Sin JavaScript queda noche, que es lo correcto: esta app es React y sin
+   JavaScript no se ve nada de todas formas.
+
+   Tipografía Space Grotesk para los números, que es lo que se lee de reojo
+   entre series.
    ========================================================================== */
 
 :root {
+  /* ---------- Noche: grafito cálido ---------- */
+
   /* Superficies, de más al fondo a más al frente */
-  --fondo: #090b10;
-  --superficie: #11151e;
-  --superficie-2: #171c27;
-  --superficie-3: #1e2532;
-  --borde: #232b3a;
-  --borde-fuerte: #334054;
+  --fondo: #17161a;
+  --superficie: #211f26;
+  --superficie-2: #26232d;
+  --superficie-3: #2c2933;
+  --borde: #322e3b;
+  --borde-fuerte: #413c4d;
 
   /* Texto */
-  --texto: #eaeef6;
-  --texto-2: #97a1b4;
-  --texto-3: #646e82;
+  --texto: #ece6de;
+  --texto-2: #a29a90;
+  --texto-3: #7b736b;
 
   /* Acento */
-  --acento: #c7f944;
-  --acento-alto: #d8ff6b;
+  --acento: #e8563d;
+  --acento-alto: #f4664d;
   --acento-tenue: color-mix(in srgb, var(--acento) 12%, transparent);
   --acento-borde: color-mix(in srgb, var(--acento) 32%, transparent);
-  --sobre-acento: #0b1006;
+  --sobre-acento: #1b0e09;
 
   /* Semánticos */
-  --ok: #3ddc97;
-  --alerta: #ffc043;
-  --error: #ff5d6c;
-  --info: #56ccf2;
-  --objetivo: #a78bfa;
+  --ok: #5fb98a;
+  --alerta: #d2a24c;
+  --error: #ff6b58;
+  --info: #7fb0cc;
+  --objetivo: #b79be0;
 
   /* Tipografía */
   --fuente-display: var(--fuente-display-next), 'Space Grotesk', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
@@ -52,6 +65,50 @@
   --velo-modal: color-mix(in srgb, #000 62%, transparent);
 
   color-scheme: dark;
+}
+
+/* ---------- Día: arena ----------
+   Papel cálido, tinta casi negra y terracota. Solo se redefine lo que cambia:
+   radios, tipografías y todo lo demás se heredan del bloque de arriba. */
+
+:root[data-tema='dia'] {
+  --fondo: #f2ebdd;
+  --superficie: #fbf7ef;
+  --superficie-2: #f6f0e4;
+  --superficie-3: #efe6d3;
+  --borde: #e4d8c2;
+  --borde-fuerte: #d5c6ab;
+
+  --texto: #221e18;
+  --texto-2: #6b6154;
+  --texto-3: #938878;
+
+  --acento: #d9552e;
+  --acento-alto: #e8663e;
+  --sobre-acento: #fff6ef;
+
+  /* Sobre papel hace falta más contraste: los mismos tonos del tema noche
+     quedarían lavados y el texto sobre ellos, ilegible. */
+  --ok: #3e5a3a;
+  --alerta: #b5821a;
+  --error: #b93a24;
+  --info: #2f6f8f;
+  --objetivo: #7a5ca8;
+
+  /* Las sombras de un tema oscuro son negro puro a mucha opacidad; en claro
+     eso ensucia. Acá son la tinta del propio tema, muy diluida. */
+  --sombra:
+    0 1px 2px color-mix(in srgb, #221e18 6%, transparent),
+    0 12px 32px -14px color-mix(in srgb, #221e18 18%, transparent);
+  --sombra-alta: 0 24px 64px -20px color-mix(in srgb, #221e18 22%, transparent);
+
+  --velo-barra: color-mix(in srgb, var(--fondo) 80%, transparent);
+  --velo-barra-fuerte: color-mix(in srgb, var(--fondo) 94%, transparent);
+  --velo-modal: color-mix(in srgb, #221e18 45%, transparent);
+
+  /* Le dice al navegador que pinte de claro lo que no controlamos: el selector
+     de fecha, los desplegables y las barras de desplazamiento. */
+  color-scheme: light;
 }
 
 * {
@@ -515,6 +572,11 @@ legend {
   background: var(--acento-tenue);
   color: var(--acento);
   font-weight: 600;
+}
+
+.chip svg {
+  width: 15px;
+  height: 15px;
 }
 
 /* ---------- Botones ---------- */
@@ -1012,6 +1074,12 @@ details.tarjeta[open] summary::before {
     padding: 11px 16px;
   }
 
+  /* Sin la navegación de escritorio, el botón es lo único que queda a la
+     derecha: le toca a él empujar. */
+  .boton-tema {
+    margin-left: auto;
+  }
+
   .contenido {
     padding: 18px 14px 104px;
     gap: 16px;
@@ -1056,6 +1124,34 @@ details.tarjeta[open] summary::before {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* ---------- Cambio de tema ---------- */
+
+.boton-tema {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  border: 1px solid var(--borde);
+  background: var(--superficie);
+  color: var(--texto-2);
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+
+.boton-tema svg {
+  width: 17px;
+  height: 17px;
+}
+
+.boton-tema:hover {
+  color: var(--texto);
+  border-color: var(--borde-fuerte);
+  background: var(--superficie-2);
 }
 
 /* ---------- Acceso ---------- */

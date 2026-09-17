@@ -3,6 +3,7 @@
 import { useRef, useState } from 'react'
 import { Aviso, Campo, CampoNumero, Chips, Tarjeta } from '../componentes/ui'
 import { TarjetaCuenta } from '../componentes/cuenta'
+import { SelectorTema } from '../componentes/tema'
 import { useAlmacen } from '../estado/almacen'
 import { ETIQUETA_ACTIVIDAD, edadDesde } from '../lib/antropometria'
 import { exportarJson, importarJson } from '../lib/almacenamiento'
@@ -57,6 +58,8 @@ export function PaginaAjustes() {
           </p>
         </div>
       </div>
+
+      <SelectorTema />
 
       <TarjetaCuenta />
 
