@@ -14,9 +14,11 @@
     "typecheck": "tsc --noEmit && tsc -p tsconfig.servidor.json"
   },
   "dependencies": {
+    "@neondatabase/serverless": "^1.1.0",
     "next": "^15.5.25",
     "react": "^19.3.0",
-    "react-dom": "^19.3.0"
+    "react-dom": "^19.3.0",
+    "resend": "^6.28.1"
   },
   "devDependencies": {
     "@types/node": "^22.20.3",

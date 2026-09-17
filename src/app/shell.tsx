@@ -4,7 +4,7 @@ import { useEffect, type ComponentType, type ReactNode } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { useAlmacen } from '../estado/almacen'
-import { RUTAS, registrarNavegador, type RutaId } from '../lib/rutas'
+import { RUTAS, esRutaPublica, registrarNavegador, type RutaId } from '../lib/rutas'
 import {
   GlifoMarca,
   IconoAjustes,
@@ -39,6 +39,10 @@ export function Shell({ children }: { children: ReactNode }) {
     registrarNavegador((href) => router.push(href))
     return () => registrarNavegador(null)
   }, [router])
+
+  // Las pantallas de acceso se pintan solas: la navegación llevaría a
+  // secciones que sin sesión no se pueden ver.
+  if (esRutaPublica(ruta)) return <>{children}</>
 
   const activa = (href: string) => ruta === href || ruta.startsWith(href + '/')
 

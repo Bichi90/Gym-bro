@@ -105,6 +105,18 @@ archivo está en `.gitignore` y no debe subirse nunca.
 
 ---
 
+## 6. Mientras no haya base configurada
+
+Sin `DATABASE_URL`, el middleware no obliga a entrar y la app sigue funcionando como hasta ahora:
+todo en el navegador, sin cuentas. Las pantallas de acceso se ven igual, pero al enviar el
+formulario el servidor contesta con un error genérico, porque no tiene dónde guardar nada.
+
+En cuanto la variable está cargada, el middleware empieza a mandar a `/entrar` a quien no tenga
+cookie de sesión. Conviene cargar las cinco variables de una vez y desplegar después, para no
+dejar el sitio pidiendo un login que todavía no puede funcionar.
+
+---
+
 ## Qué NO hacer
 
 - **No pegues estas claves en el chat con Claude.** Quedan en el historial de la conversación.
