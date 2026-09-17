@@ -50,22 +50,39 @@ psql "$DATABASE_URL" -f db/001_inicial.sql
 
 ## 3. Correo en Resend
 
-> **Un `.vercel.app` no sirve como dominio de envío.** No se controla su DNS, así que no se pueden
-> cargar los registros SPF y DKIM que exige Resend. El remitente tiene que salir de un dominio
-> propio (por ejemplo un subdominio de `elsimetrico.com.ar`) o del dominio de pruebas de Resend,
-> que solo envía a tu propia dirección. Que la app y el remitente estén en dominios distintos es
-> normal y no da problemas.
+**Ahora mismo el proyecto usa el modo de pruebas de Resend.** Es una decisión tomada a
+conciencia y tiene una consecuencia que hay que tener presente:
 
-1. Cuenta en [resend.com](https://resend.com).
-2. **Domains → Add Domain.** Acá hay una decisión:
-   - **Dominio propio** (por ejemplo `gymbro.elsimetrico.com.ar`): hay que agregar los registros
-     DNS que Resend indica (SPF, DKIM y DMARC). Es lo que hace que los correos lleguen a la bandeja
-     y no a spam. Recomendado.
-   - **Dominio de pruebas de Resend**: funciona sin configurar nada, pero solo puede enviarte
-     correos a vos mismo. Sirve para probar, no para usuarios reales.
-3. **API Keys → Create**, con permiso de solo envío. Ese valor es `RESEND_API_KEY`.
-4. El remitente (`CORREO_REMITENTE`) tiene que estar en el dominio verificado. Por ejemplo
-   `Gym Bro <acceso@gymbro.elsimetrico.com.ar>`.
+> Con el remitente `onboarding@resend.dev`, **Resend solo entrega a la dirección con la que se
+> creó la cuenta**. A vos te llegan los códigos; a un alumno, no. Alcanza para desarrollar y
+> probar el acceso completo, no para dar de alta a otra persona.
+
+### Los pasos
+
+1. Cuenta en [resend.com](https://resend.com), con la casilla donde querés recibir los códigos:
+   esa va a ser la única que los reciba.
+2. **API Keys → Create API Key.** Nombre `gym-bro`, permiso **Sending access** (no *Full
+   access*: esta clave solo tiene que poder mandar correo). La clave `re_...` se muestra una
+   sola vez, y es `RESEND_API_KEY`.
+3. `CORREO_REMITENTE` queda como `Gym Bro <onboarding@resend.dev>`.
+
+### Cuando haga falta escribirle a otra gente
+
+Hay que cambiar algo, y hay más de una salida. Un `.vercel.app` **no** sirve: no se controla su
+DNS, así que no se pueden cargar los registros SPF y DKIM que Resend exige. Las opciones reales
+son dos:
+
+- **Verificar un dominio propio en Resend** (Domains → Add Domain, y cargar SPF, DKIM y DMARC
+  donde esté el DNS). Es lo más prolijo y lo que mejor llega a la bandeja de entrada. Que la app
+  y el remitente estén en dominios distintos es normal y no da problemas.
+- **Cambiar de proveedor** a uno que permita verificar una dirección suelta sin dominio —Brevo,
+  Mailjet, SendGrid—. Se verifica un correo cualquiera (conviene uno dedicado a la app, no el
+  personal) y desde ahí se puede escribir a cualquiera.
+
+El cambio es acotado: el envío está detrás de la interfaz `EnviadorCorreo`
+(`servidor/auth/puertos.ts`), y `EnviadorResend` es una implementación de varias posibles. Cambiar
+de proveedor es escribir un adaptador nuevo y cambiar una línea en `servidor/contexto.ts`. Nada del
+flujo de acceso se toca.
 
 ---
 
@@ -102,6 +119,18 @@ nombre.
 
 Para probarlo en tu máquina, copiá `.env.example` a `.env.local` y completá los valores. Ese
 archivo está en `.gitignore` y no debe subirse nunca.
+
+---
+
+## 6. Mientras no haya base configurada
+
+Sin `DATABASE_URL`, el middleware no obliga a entrar y la app sigue funcionando como hasta ahora:
+todo en el navegador, sin cuentas. Las pantallas de acceso se ven igual, pero al enviar el
+formulario el servidor contesta con un error genérico, porque no tiene dónde guardar nada.
+
+En cuanto la variable está cargada, el middleware empieza a mandar a `/entrar` a quien no tenga
+cookie de sesión. Conviene cargar las cinco variables de una vez y desplegar después, para no
+dejar el sitio pidiendo un login que todavía no puede funcionar.
 
 ---
 

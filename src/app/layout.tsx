@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from 'next'
 import { Inter, Space_Grotesk } from 'next/font/google'
 import { ProveedorAlmacen } from '../estado/almacen'
+import { ProveedorTema } from '../estado/tema'
+import { COLOR_BARRA, GUION_TEMA_INICIAL } from '../lib/tema'
 import { Shell } from './shell'
 import './estilos.css'
 
@@ -30,7 +32,12 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  themeColor: '#090B10',
+  // Dos valores para que la barra del navegador acompañe al tema desde la
+  // primera carga. Si la persona eligió uno a mano, el proveedor lo corrige.
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: COLOR_BARRA.dia },
+    { media: '(prefers-color-scheme: dark)', color: COLOR_BARRA.noche },
+  ],
   width: 'device-width',
   initialScale: 1,
   viewportFit: 'cover',
@@ -38,11 +45,19 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="es" className={`${display.variable} ${texto.variable}`}>
+    // suppressHydrationWarning: el guión de abajo escribe `data-tema` en el
+    // <html> antes de que React hidrate, así que el atributo no coincide con
+    // lo que se renderizó en el servidor. Es a propósito.
+    <html lang="es" className={`${display.variable} ${texto.variable}`} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: GUION_TEMA_INICIAL }} />
+      </head>
       <body>
-        <ProveedorAlmacen>
-          <Shell>{children}</Shell>
-        </ProveedorAlmacen>
+        <ProveedorTema>
+          <ProveedorAlmacen>
+            <Shell>{children}</Shell>
+          </ProveedorAlmacen>
+        </ProveedorTema>
       </body>
     </html>
   )

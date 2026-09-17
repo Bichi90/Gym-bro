@@ -4,7 +4,8 @@ import { useEffect, type ComponentType, type ReactNode } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { useAlmacen } from '../estado/almacen'
-import { RUTAS, registrarNavegador, type RutaId } from '../lib/rutas'
+import { RUTAS, esRutaPublica, registrarNavegador, type RutaId } from '../lib/rutas'
+import { BotonTema } from '../componentes/tema'
 import {
   GlifoMarca,
   IconoAjustes,
@@ -40,6 +41,10 @@ export function Shell({ children }: { children: ReactNode }) {
     return () => registrarNavegador(null)
   }, [router])
 
+  // Las pantallas de acceso se pintan solas: la navegación llevaría a
+  // secciones que sin sesión no se pueden ver.
+  if (esRutaPublica(ruta)) return <>{children}</>
+
   const activa = (href: string) => ruta === href || ruta.startsWith(href + '/')
 
   return (
@@ -64,6 +69,8 @@ export function Shell({ children }: { children: ReactNode }) {
             )
           })}
         </nav>
+
+        <BotonTema />
       </header>
 
       <main className="contenido">{children}</main>

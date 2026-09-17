@@ -40,3 +40,25 @@ export function navegar(id: RutaId): void {
   if (empujar) empujar(href)
   else if (typeof window !== 'undefined') window.location.assign(href)
 }
+
+/**
+ * Rutas que se pueden ver sin sesión. Las usan el middleware (para decidir la
+ * redirección) y el shell (para pintar las pantallas de acceso sin la
+ * navegación de la app, que ahí no tendría a dónde llevar).
+ */
+export const RUTAS_PUBLICAS = ['/entrar', '/crear-cuenta', '/codigo'] as const
+
+export function esRutaPublica(pathname: string): boolean {
+  return RUTAS_PUBLICAS.some((r) => pathname === r || pathname.startsWith(r + '/'))
+}
+
+/** Destino tras entrar. Se rechaza cualquier cosa que no sea una ruta interna
+ * para que un enlace preparado no pueda usar `?volver=` como redirección
+ * abierta hacia otro dominio. */
+export function destinoSeguro(volver: string | null | undefined): string {
+  if (!volver) return '/panel'
+  // `//otro.com` y `/\otro.com` los interpreta el navegador como absolutos.
+  if (!volver.startsWith('/') || volver.startsWith('//') || volver.startsWith('/\\')) return '/panel'
+  if (esRutaPublica(volver)) return '/panel'
+  return volver
+}
