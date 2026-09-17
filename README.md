@@ -66,8 +66,8 @@ npm run build      # build de producción
 npm start          # sirve el build
 ```
 
-La versión publicada vive en **https://gym-bro-soporteck-srl.vercel.app**. Cada push a `main`
-despliega, y cada PR genera una preview. CI comprueba tipos, tests y build antes de mergear.
+La versión publicada vive en **https://gymbro-ar.vercel.app**. Cada push a `main` despliega, y cada PR
+genera una preview. CI comprueba tipos, tests y build antes de mergear.
 
 El primer arranque va vacío. El orden recomendado es **Ajustes** (altura, fecha de nacimiento,
 experiencia, equipamiento) → **Antropometría** (primera medición) → **Objetivo** → *Generar rutina*

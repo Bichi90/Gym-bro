@@ -7,13 +7,12 @@ Todos requieren entrar a las consolas de cada servicio con tu cuenta.
 
 ## 1. Dominio en Vercel
 
-**Vercel → gym-bro → Settings → Domains → Add**, y pedí `gymbro.vercel.app`.
-
-Si estuviera ocupado, probá `gym-bro-app.vercel.app` o `gymbro-ar.vercel.app`. Anotá cuál quedó:
-ese valor es el que va en `URL_PUBLICA`, y es el que aparece en los enlaces de los correos.
+Hecho: el dominio es **https://gymbro-ar.vercel.app**, y es el valor que va en `URL_PUBLICA`.
+(`gymbro.vercel.app` estaba ocupado; los subdominios de `.vercel.app` son únicos para todas las
+cuentas de Vercel, no solo para la tuya.)
 
 El alias que Vercel asigna por defecto (`gym-bro-soporteck-srl.vercel.app`) sigue funcionando; el
-nuevo se suma, no lo reemplaza.
+nuevo se sumó, no lo reemplazó.
 
 ---
 
@@ -50,6 +49,12 @@ psql "$DATABASE_URL" -f db/001_inicial.sql
 ---
 
 ## 3. Correo en Resend
+
+> **Un `.vercel.app` no sirve como dominio de envío.** No se controla su DNS, así que no se pueden
+> cargar los registros SPF y DKIM que exige Resend. El remitente tiene que salir de un dominio
+> propio (por ejemplo un subdominio de `elsimetrico.com.ar`) o del dominio de pruebas de Resend,
+> que solo envía a tu propia dirección. Que la app y el remitente estén en dominios distintos es
+> normal y no da problemas.
 
 1. Cuenta en [resend.com](https://resend.com).
 2. **Domains → Add Domain.** Acá hay una decisión:
